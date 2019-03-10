@@ -8,7 +8,7 @@ var watcher,
   params = {
     space: 2,
     postfix: "Style.js",
-    initAuto: true,
+    initAuto: false,
     ignored: /\.(jsx?|png|jpe?g|gif|json)$/
   };
 
