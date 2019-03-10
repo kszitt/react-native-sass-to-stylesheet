@@ -1,0 +1,26 @@
+{
+  "name": "react-native-sass-to-stylesheet",
+  "version": "0.1.6",
+  "description": "sass and css file transform to react-native stylesheet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kszitt",
+  "license": "ISC",
+  "homepage": "https://github.com/kszitt/react-native-sass-to-stylesheet.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kszitt/react-native-sass-to-stylesheet.git"
+  },
+  "keywords": [
+    "react-native",
+    "native",
+    "sass",
+    "css",
+    "stylesheet"
+  ],
+  "dependencies": {
+    "chokidar": "^2.1.2"
+  }
+}
