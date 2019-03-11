@@ -18,7 +18,9 @@ function CssToStyles(css){
   // margin, padding
   css = css.replace(/[ ]*(margin|padding)\s*:.+?;/g, text => {
     let margin = text.match(/(margin|padding)/)[0],
-      array = text.match(/\d+[a-z]+/g);
+      s = text.match(/^[ ]*/),
+      array = text.match(/\d+[a-z]*/g);
+    s = s ? s[0] : "";
 
 
     switch(array.length){
@@ -85,7 +87,7 @@ function CssToStyles(css){
       .replace(/\s*;$/, "\",")
       .replace(/\d+(px|em)/g, s => parseInt(s))
       .replace(/"\d+"/g, s => s.replace(/"/g, ""))
-      .replace(/-[A-z]/g, s => s.replace(/^-/g, "").toUpperCase())
+      .replace(/(-[A-z]+)+ *:/g, s => s.replace(/-[A-z]/g, x => x.replace(/^-/, "").toUpperCase()));
   });
 
   // },
