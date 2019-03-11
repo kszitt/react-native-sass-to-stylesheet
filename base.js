@@ -23,7 +23,8 @@ function writeFile(path, string){
   try {
     fs.writeFileSync(path, string);
 
-    console.log(`编译成功：${path}`);
+    let date = new Date();
+    console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  编译成功：${path}`);
   } catch(err){
     console.error(err);
   }

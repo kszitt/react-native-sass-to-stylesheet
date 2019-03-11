@@ -7,18 +7,10 @@ function CssToStyles(css){
     options = require("./index").getOptions();
   }
 
-  // 特殊符号特殊处理
-  css = css.replace(/url\(.+?\)/g,
-    text => text.replace(/:/g, "@@@@")
-      .replace(/\./g, "****")
-      .replace(/#/g, "&&&&")
-  );
-  css = css.replace(/#[\dA-z]{3,6};/g, text => text.replace(/^#/, "&&&&"));
-
   // margin, padding
-  css = css.replace(/[ ]*(margin|padding)\s*:.+?;/g, text => {
+  css = css.replace(/ *(margin|padding)\s*:.+?;/g, text => {
     let margin = text.match(/(margin|padding)/)[0],
-      s = text.match(/^[ ]*/),
+      s = text.match(/^ */),
       array = text.match(/\d+[a-z]*/g);
     s = s ? s[0] : "";
 
@@ -45,12 +37,12 @@ function CssToStyles(css){
   });
 
   // background
-  css = css.replace(/[ ]*background *:.+?;/g, text => text.replace(/background/, "background-color"));
+  css = css.replace(/ *background *:.+?;/g, text => text.replace(/background/, "background-color"));
 
   // border
-  css = css.replace(/[ ]*border(-left|-right|-top|-bottom)? *:.+?;/g, text => {
+  css = css.replace(/ *border(-left|-right|-top|-bottom)? *:.+?;/g, text => {
     let border = text.match(/border[-A-z]*/)[0],
-      s = text.match(/^[ ]*/),
+      s = text.match(/^ */),
       array = text.match(/:\s*[^;]+/);
     s = s ? s[0] : "";
 
@@ -62,8 +54,8 @@ function CssToStyles(css){
   });
 
   // text-decoration
-  css = css.replace(/[ ]*text-decoration *:.+?;/g, text => {
-    let s = text.match(/^[ ]*/),
+  css = css.replace(/ *text-decoration *:.+?;/g, text => {
+    let s = text.match(/^ */),
       array = text.match(/:\s*[^;]+/);
     s = s ? s[0] : "";
 
@@ -74,9 +66,9 @@ function CssToStyles(css){
       `${s}text-decoration-style: ${array[2]};`;
   });
 
-  // 处理.red #header
-  css = css.replace(/[.#][^\d][A-z\d\-_]+/g, text => {
-    return options.space + text.replace(/^[.#]/, "") + ":";
+  // 处理.red
+  css = css.replace(/\.[^\d][A-z\d\-_]+/g, text => {
+    return options.space + text.replace(/^\./, "") + ":";
   });
 
   // "color": "red";
@@ -85,7 +77,7 @@ function CssToStyles(css){
       .replace(/\s*:/, ":")
       .replace(/:\s*/, ": \"")
       .replace(/\s*;$/, "\",")
-      .replace(/\d+(px|em)/g, s => parseInt(s))
+      .replace(/\d+(px|em)/g, s => parseFloat(s))
       .replace(/"\d+"/g, s => s.replace(/"/g, ""))
       .replace(/(-[A-z]+)+ *:/g, s => s.replace(/-[A-z]/g, x => x.replace(/^-/, "").toUpperCase()));
   });
@@ -94,14 +86,8 @@ function CssToStyles(css){
   css = css.replace(/}/g, options.space + "},");
   css = css.replace(/},\s+$/, "}");
 
-
-  // 特殊符号特殊处理
-  css = css.replace(/url\(.+?\)/g,
-    text => text.replace(/@@@@/g, ":")
-      .replace(/\*\*\*\*/g, ".")
-      .replace(/&&&&/g, "#")
-  );
-  css = css.replace(/&&&&/g,"#");
+  // 在一个{}中出现多个borderStyle:处理
+  css = css.replace(/ borderStyle:[^}]+ borderStyle:.+?\n/g, text => text.replace(/\n[^\n]+\n$/, "\n"));
 
   return css;
 }

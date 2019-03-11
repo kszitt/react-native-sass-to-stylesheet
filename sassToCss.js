@@ -1,14 +1,27 @@
-// 删除注释
+
+// 删除注释， 替换#,\t
 function deleteNotes(style){
-  return style.replace(/[\t ]*?\/\/[\s\S]+?\n/g, "").replace(/\s*?\/\*[\s\S]+?\*\//g, "");
+  let space = require("./index").getOptions().space;
+
+  style = style.replace(/\t/g, space);
+
+  style = style.replace(/ *?\/\/[\s\S]+?\n/g, "").replace(/\s*?\/\*[\s\S]+?\*\//g, "");
+  return style.replace(/#[\S]+?[ ;{]/g, text => {
+    if(/^#[A-z\d]{3,6};$/.test(text)){
+      return text;
+    }
+    return text.replace(/#/, ".");
+  });
 }
 
 // 替换{}
 function replace(style, index){
-  if(!/\{/.test(style)) return style;
+  if(!/{/.test(style)) return style;
 
-  style = style.replace(/\s*\..+\{[^\{]+?\}/, text => {
-    let key = text.match(/\..+\{/)[0].replace(/\.|\s*\{/g, "");
+  // 找到最里面的{}
+  style = style.replace(/\s*\..+{[^{]+?}/, text => {
+    // key: className
+    let key = text.match(/\..+{/)[0].replace(/\.|\s*{/g, "");
 
     if(index === undefined) {
       index = 0;
@@ -16,9 +29,11 @@ function replace(style, index){
       index++;
     }
 
+    // 替换className, %7B
     text = text.replace(/[\S]+ *\*\d+%7B/g, s => "." + key + "_" + s.replace(/^\./, ""));
 
-    return text.replace(/\{/, "*"+index+"%7B").replace(/\}/, "*"+index+"%7D");
+    // 替换{}
+    return text.replace(/{/, "*"+index+"%7B").replace(/}/, "*"+index+"%7D");
   });
 
   return replace(style, index);
@@ -39,9 +54,7 @@ function port(style, index){
     index++;
   }
 
-  // console.log("index:", index, key);
   style = style.replace(eval("/\\"+ key +"[BD]/g"), text => {
-    // console.log("text:", text);
     return text.replace(/\*\d+%/g, d => "*"+ index + "_%")
   });
 
@@ -52,24 +65,21 @@ function port(style, index){
 function extract(style, i=0, css=""){
   if(!eval("/\\*"+ i +"_%7[BD]/").test(style)) return css;
 
-  let str = style.match(eval("/[ ]*.+?\\*"+ i +"_%7B[\\s\\S]+?\\*"+ i +"_%7D/"));
+  // 获取一个完整的*\d_%7B  *\d_%7D
+  let str = style.match(eval("/ *.+?\\*"+ i +"_%7B[\\s\\S]+?\\*"+ i +"_%7D/"));
 
   if(str){
-    // console.log("str[0]:", JSON.stringify(str[0]));
+    // 最外面的替换回{}
     str = str[0].replace(eval("/\\*"+ i +"+_%7B/"), "{").replace(eval("/\\*"+ i +"+_%7D/"), "}") + "\n";
     // 删除多余的花括号
     str = str.replace(/\s*.+?\*\d+_%7B[\s\S]+\*\d+_%7D/, "");
-    // 删除花括号前的空格
-    // console.log("str:", i, JSON.stringify(str));
-    // console.log("str:", i, str);
-    str = str.replace(/\s*.+?\{[\s\S]+\}/, text => {
-      // console.log("找到:", JSON.stringify(text));
-      let space = text.match(/^[ ]*/)[0];
-      space = /^[ ]*/.test(space) ? space : text.match(/^\t*/)[0];
-      // console.log("space", space.length);
+    // 删除花括号前的空格（格式化）
+    str = str.replace(/\s*.+?{[\s\S]+}/, text => {
+      let space = text.match(/^ */)[0];
+
       text = text.replace(eval("/^"+ space +"/"), "");
       text = text.replace(eval("/\\n"+ space +"/g"), "\n");
-      // console.log("text", JSON.stringify(text));
+
       return text;
     });
     css += str;
@@ -82,8 +92,7 @@ function extract(style, i=0, css=""){
 module.exports = function SassToCss(sass){
   sass = deleteNotes(sass);
   sass = replace(sass);
-  // console.log("replace", sass);
   sass = port(sass);
-  // console.log("port", sass);
+
   return extract(sass);
 };

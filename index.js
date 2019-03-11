@@ -2,14 +2,36 @@ const chokidar = require('chokidar');
 const Transform = require("./transform");
 const AutoWriteStyles = require("./autoWriteStyles");
 const SassToStyles = {};
+let template = `import {StyleSheet, PixelRatio} from 'react-native';
+const pixelRatio = PixelRatio.get();
+
+
+let styles = {};
+
+
+for(let i in css){
+  for(let k in css[i]){
+    if(typeof css[i][k] === "number"){
+      if(k !== "flex"){
+        css[i][k] = parseInt((css[i][k] / pixelRatio).toFixed(2));
+      }
+    }
+  }
+}
+
+const styleSheet = StyleSheet.create(css);
+
+export default styleSheet;
+`;
 
 
 var watcher,
   params = {
     space: 2,
     postfix: "Style.js",
-    initAuto: false,
-    ignored: /\.(jsx?|png|jpe?g|gif|json)$/
+    initTransform: false,
+    ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
+    template
   };
 
 
@@ -33,7 +55,7 @@ async function init(path, options){
     }
   }
 
-  if(params.initAuto){
+  if(params.initTransform){
     await AutoWriteStyles(path);
     console.log("初始化编译完成");
   }
@@ -44,10 +66,11 @@ async function init(path, options){
 
   watcher.on('ready', () => {
     console.log(`开始监听${path}`);
-    watcher.on('change', (path, stats) => {
+    watcher.on('change', (path) => {
       if(!/\.s?css$/.test(path)) return;
 
-      console.log(`正在编译：${path}`);
+      let date = new Date();
+      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  正在编译：${path}`);
       Transform(path);
     });
   });
