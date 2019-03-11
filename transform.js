@@ -45,7 +45,10 @@ ${styles}
 for(let i in css){
   for(let k in css[i]){
     if(typeof css[i][k] === "number"){
-      css[i][k] = parseInt(css[i][k] / pixelRatio);
+      let num = parseInt(css[i][k] / pixelRatio);
+      if(num <= 1) num = 1;
+      
+      css[i][k] = num;
     }
   }
 }
