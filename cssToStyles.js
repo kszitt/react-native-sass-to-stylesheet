@@ -57,7 +57,7 @@ function CssToStyles(css){
     array = array[0].replace(/^:\s*/, "").match(/[\S]+/g);
 
     return  `${s}${border}-width: ${parseInt(array[0])};\n` +
-      `${s}${border}-style: ${array[1]};\n` +
+      `${s}border-style: ${array[1]};\n` +
       `${s}${border}-color: ${array[2]};`;
   });
 
