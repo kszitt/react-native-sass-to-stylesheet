@@ -9,17 +9,17 @@ const pixelRatio = PixelRatio.get();
 let styles = {};
 
 
-for(let i in css){
-  for(let k in css[i]){
-    if(typeof css[i][k] === "number"){
+for(let i in styles){
+  for(let k in styles[i]){
+    if(typeof styles[i][k] === "number"){
       if(k !== "flex"){
-        css[i][k] = parseInt((css[i][k] / pixelRatio).toFixed(2));
+        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
       }
     }
   }
 }
 
-const styleSheet = StyleSheet.create(css);
+const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
 `;
