@@ -70,7 +70,7 @@ function extract(style, i=0, css=""){
 
   if(str){
     // 最外面的替换回{}
-    str = str[0].replace(eval("/\\*"+ i +"+_%7B/"), "{").replace(eval("/\\*"+ i +"+_%7D/"), "}") + "\n";
+    str = str[0].replace(eval("/\\*"+ i +"_%7B/"), "{").replace(eval("/\\*"+ i +"_%7D/"), "}") + "\n";
     // 删除多余的花括号
     str = str.replace(/\s*.+?\*\d+_%7B[\s\S]+\*\d+_%7D/, "");
     // 删除花括号前的空格（格式化）
@@ -93,6 +93,7 @@ module.exports = function SassToCss(sass){
   sass = deleteNotes(sass);
   sass = replace(sass);
   sass = port(sass);
+  sass = extract(sass);
 
-  return extract(sass);
+  return sass;
 };
