@@ -78,7 +78,7 @@ function CssToStyles(css){
       .replace(/:\s*/, ": \"")
       .replace(/\s*;$/, "\",")
       .replace(/\d+(px|em)/g, s => parseFloat(s))
-      .replace(/"\d+"/g, s => s.replace(/"/g, ""))
+      .replace(/"\.?\d+"/g, s => s.replace(/"/g, ""))
       .replace(/(-[A-z]+)+ *:/g, s => s.replace(/-[A-z]/g, x => x.replace(/^-/, "").toUpperCase()));
   });
 
