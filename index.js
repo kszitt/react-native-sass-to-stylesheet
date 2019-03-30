@@ -13,8 +13,7 @@ let watcher,
     postfix: "Style.js",
     initTransform: false,
     ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
-    templatePath: "./template.js",
-    global: {}
+    templatePath: "./template.js"
   };
 
 
@@ -28,7 +27,7 @@ function getTemplate(){
     template = `import {StyleSheet, PixelRatio} from 'react-native';
 
 let styles = {};
-      
+
 const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;`;
@@ -60,7 +59,6 @@ async function init(path, options){
 
   if(params.initTransform){
     await AutoWriteStyles(path);
-    console.log("初始化编译完成");
   }
 
   watcher = chokidar.watch(path, {
