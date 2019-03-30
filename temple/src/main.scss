@@ -1,12 +1,9 @@
-$color: blue;
-$size: 20px;
-$background: rgba(255, 255, 255, .8) !global;
-
-
-
-
-#main {
-  font-size: $size;
-  background: $background;
-  border: $border;
+/* 注释 */
+#header {
+  // 注释
+  background: #888;
+  border: 1px solid #ccc;
+  flex-direction: row;
+  margin: 0 10px 10px;
+  text-decoration: underline white solid;
 }

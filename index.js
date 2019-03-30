@@ -24,13 +24,7 @@ function getOptions(){
 function getTemplate(){
   let template = GetFileContent(params.templatePath);
   if(!template){
-    template = `import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;`;
+    template = GetFileContent(`${__dirname}/template.js`);
   }
 
   params.template = template;
