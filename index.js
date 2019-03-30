@@ -9,7 +9,7 @@ const SassToStyles = {};
 
 let watcher,
   params = {
-    space: 2,
+    space: 2,   // indent
     postfix: "Style.js",
     initTransform: false,
     ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
@@ -33,7 +33,7 @@ function getTemplate(){
 async function init(path, options){
   params = Object.assign(params, options);
 
-  // 缩进
+  // indent
   if(params.space){
     let i = 0,
       space = params.space;
@@ -45,10 +45,10 @@ async function init(path, options){
     }
   }
 
-  // 模板
+  // Template
   getTemplate();
 
-  // 设置全局样式
+  // Setting global style
   await SetGlobal(path);
 
   if(params.initTransform){
@@ -60,13 +60,13 @@ async function init(path, options){
   });
 
   watcher.on('ready', () => {
-    console.log(`开始监听${path}`);
+    console.log(`Start monitoring ${path}`);
     watcher.on('change', (path) => {
       if(!/\.s?css$/.test(path)) return;
 
       let date = new Date();
       getTemplate();
-      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  正在编译：${path}`);
+      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  Being compiled：${path}`);
       Transform(path);
     });
   });
