@@ -1,0 +1,12 @@
+$color: red !global;
+$size: 12px !global;
+$border: 1px solid #cccccc !global;
+
+#header {
+  font-size: $size;
+  color: $color;
+}
+
+.footer {
+  color: $color;
+}

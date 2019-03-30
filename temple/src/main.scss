@@ -1,0 +1,12 @@
+$color: blue;
+$size: 20px;
+$background: rgba(255, 255, 255, .8) !global;
+
+
+
+
+#main {
+  font-size: $size;
+  background: $background;
+  border: $border;
+}
