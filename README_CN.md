@@ -10,14 +10,14 @@ npm install react-native-sass-to-stylesheet --save-dev
 ```
 
 ## 使用
-### 1、新建`toStyles.js`，并添加以下内容
+#### 1、新建`toStyles.js`，并添加以下内容
 ``` javascript
 const SassToStyles = require("react-native-sass-to-stylesheet");
 
 SassToStyles.init(<path>);
 ```
 
-#### .init(path[, options])
+##### .init(path[, options])
 - path{string} 要监听的文件夹路径，必须
 - options{object}
     - space{number} css文件缩进值，默认`2`
@@ -26,7 +26,7 @@ SassToStyles.init(<path>);
     - ignored{reg} 忽略文件，默认`/\.(jsx?|png|jpe?g|gif|json)$/`
     - templatePath{string} 自动转换文件模板路径
 
-### 2、`package.json`的scripts中，添加
+#### 2、`package.json`的scripts中，添加
 ``` json
 "transition": "node toStyles.js"
 ```
@@ -158,13 +158,13 @@ export default styleSheet;
 ```
 
 ## 注意
-### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
+#### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
 ``` scss
 #header {
   font-size: 12px;
 }
 ```
-### 2、以下转换不成功，请避免使用
+#### 2、以下转换不成功，请避免使用
 ``` scss
 .aa, .bb {}
 .cc .dd {}

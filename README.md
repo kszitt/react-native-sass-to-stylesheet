@@ -10,14 +10,14 @@ npm install react-native-sass-to-stylesheet --save-dev
 ```
 
 ## use
-### 1. create`toStyles.js`, this content
+#### 1. create`toStyles.js`, this content
 ``` javascript
 const SassToStyles = require("react-native-sass-to-stylesheet");
 
 SassToStyles.init(<path>);
 ```
 
-#### .init(path[, options])
+##### .init(path[, options])
 - path{string} watch folder paths，request
 - options{object}
     - space{number} indent value，default`2`
@@ -27,12 +27,12 @@ SassToStyles.init(<path>);
     - ignored{reg} ignored files, default`/\.(jsx?|png|jpe?g|gif|json)$/`
     - templatePath{string} automatic conversion of file template path
 
-### 2. `scripts` in `package.json`, add
+#### 2. `scripts` in `package.json`, add
 ``` json
 "transition": "node toStyles.js"
 ```
 
-### 3. start
+#### 3. start
 ``` javascript
 npm run transition
 ```
@@ -123,7 +123,7 @@ let styles = {
 ```
 
 ## Template
-insert the transformed `styles`object into the template's `let styles = {};` in which it is directly referenced in `react-native'.
+insert the transformed `styles`object into the template's `let styles = {};` in which it is directly referenced in `react-native`.
 
 ### default template
 ``` javascript
@@ -159,13 +159,13 @@ export default styleSheet;
 ```
 
 ## Be careful
-#### 1. Please write SCSS in the following form. Each style has a `;`end, The number of indented cells can be customized.
+##### 1. Please write SCSS in the following form. Each style has a `;`end, The number of indented cells can be customized.
 ``` scss
 #header {
   font-size: 12px;
 }
 ```
-#### 2. The following conversion is unsuccessful. Avoid using it
+##### 2. The following conversion is unsuccessful. Avoid using it
 ``` scss
 .aa, .bb {}
 .cc .dd {}
