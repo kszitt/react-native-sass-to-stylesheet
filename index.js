@@ -55,6 +55,7 @@ async function init(path, options){
     await AutoWriteStyles(path);
   }
 
+  return;
   watcher = chokidar.watch(path, {
     ignored: params.ignored
   });
