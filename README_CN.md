@@ -37,7 +37,7 @@ npm run transition
 ```
 
 ## 效果
-### 例1 `main.scss`
+### 例1
 ``` scss
 #header {
   font-size: 12px;
@@ -49,7 +49,7 @@ npm run transition
   background: rgba(255, 255, 255, .8);
 }
 ```
-转换后，`mainStyle.js`
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   header: {
@@ -75,7 +75,7 @@ let styles = {
   text-decoration: underline white solid;
 }
 ```
-转换后，=>
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   header: {
@@ -94,7 +94,7 @@ let styles = {
   }
 }
 ```
-### 例3，变量
+### 例3
 ``` scss
 $size: 12px !global;  // 全局变量在任何文件中，都可以直接用
 $color: red;
@@ -107,7 +107,7 @@ $color: red;
   font-size: $size;
 }
 ```
-转换后，=>
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   home: {
@@ -117,6 +117,38 @@ let styles = {
   },
   main: {
     fontSize: 12,
+  }
+};
+```
+### 例4
+``` scss
+#header{
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  header:{
+    fontStyle: "italic",
+    fontWeight: "bold",
+    fontSize: 12,
+    fontHeight: 24,
+    fontFamily: "arial",
+    transform: {
+      translateY: 5,
+      scaleY: 3,
+      rotate: "10deg",
+      skewY: "20deg",
+    },
+    textShadowOffset: {
+      width: 10,
+      height: 20
+    },
+    textShadowRadio: 5,
+    textShadowColor: "#ccc",
   }
 };
 ```
@@ -166,6 +198,10 @@ export default styleSheet;
 ```
 #### 2、以下转换不成功，请避免使用
 ``` scss
-.aa, .bb {}
-.cc .dd {}
+.aa, .bb {
+
+}
+.cc .dd {
+
+}
 ```

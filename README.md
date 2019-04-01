@@ -50,7 +50,7 @@ npm run transition
   background: rgba(255, 255, 255, .8);
 }
 ```
-after conversion, =>
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   header: {
@@ -76,7 +76,7 @@ let styles = {
   text-decoration: underline white solid;
 }
 ```
-after conversion, =>
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   header: {
@@ -108,7 +108,7 @@ $color: red;
   font-size: $size;
 }
 ```
-after conversion, =>
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 let styles = {
   home: {
@@ -118,6 +118,38 @@ let styles = {
   },
   main: {
     fontSize: 12,
+  }
+};
+```
+### example 4
+``` scss
+#header{
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  header:{
+    fontStyle: "italic",
+    fontWeight: "bold",
+    fontSize: 12,
+    fontHeight: 24,
+    fontFamily: "arial",
+    transform: {
+      translateY: 5,
+      scaleY: 3,
+      rotate: "10deg",
+      skewY: "20deg",
+    },
+    textShadowOffset: {
+      width: 10,
+      height: 20
+    },
+    textShadowRadio: 5,
+    textShadowColor: "#ccc",
   }
 };
 ```
@@ -167,6 +199,10 @@ export default styleSheet;
 ```
 ##### 2. The following conversion is unsuccessful. Avoid using it
 ``` scss
-.aa, .bb {}
-.cc .dd {}
+.aa, .bb {
+
+}
+.cc .dd {
+
+}
 ```

@@ -1,4 +1,5 @@
 #header{
-  font-size: 10px;
-  transform: translateY(5px) scaleY(3) rotateX(30deg) skewY(20deg);
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
 }
