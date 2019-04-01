@@ -189,6 +189,18 @@ const styleSheet = StyleSheet.create(styles);
 export default styleSheet;
 ```
 
+## 使用Demo
+#### 1、安装依赖
+``` javascript
+npm install
+```
+#### 2、启动服务
+``` javascript
+npm run temple
+```
+#### 3、在temple/src文件夹下创建、修改sass,css文件
+#### 4、当前css文件所在目录，自动生成js文件
+
 ## 注意
 #### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
 ``` scss

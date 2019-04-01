@@ -154,6 +154,18 @@ let styles = {
 };
 ```
 
+## Use Demo
+#### 1. install
+``` javascript
+npm install
+```
+#### 2. start server
+``` javascript
+npm run temple
+```
+#### 3. create and modify sass and css files under "temple/src" folder
+#### 4. the directory where the current CSS file is located automatically generates JS files
+
 ## Template
 insert the transformed `styles`object into the template's `let styles = {};` in which it is directly referenced in `react-native`.
 
