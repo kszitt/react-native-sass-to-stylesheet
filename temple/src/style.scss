@@ -1,5 +1,28 @@
-#header{
-  font: italic bold 12px/24px "arial";
-  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
-  text-shadow: 10px 20px 5px #ccc;
+.wrapper {
+  flex: 1;
+  background: #f8f8f8;
+}
+.transform {
+  height: 500px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  .text {
+    height: 60px;
+    line-height: 60px;
+    transform: rotate(180deg) translate(100px);
+    background: red;
+  }
+  .aa {
+    width: 100px;
+  }
+}
+.flex {
+  flex: 1;
+}
+
+@media screen and(max-width: 1000px){
+  .body {
+    font-size: 12px;
+  }
 }
