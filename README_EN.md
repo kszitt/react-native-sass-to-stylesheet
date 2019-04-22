@@ -1,23 +1,27 @@
-## Language
+### Language
 [简体中文](https://github.com/kszitt/react-native-sass-to-styleSheet/blob/master/README.md)
 
-## Description
-css file transform to react-native stylesheet
+### Description
+css file transform to react-native stylesheet  
+1. support variable  
+2. support for media queries  
+3. support nesting  
+4. support `transform`
 
-## install
+### install
 ``` javascript
 npm install react-native-sass-to-stylesheet --save-dev
 ```
 
-## use
-#### 1. create`toStyles.js`, this content
+### use
+##### 1. create`toStyles.js`, this content
 ``` javascript
 const SassToStyles = require("react-native-sass-to-stylesheet");
 
 SassToStyles.init(<path>);
 ```
 
-##### .init(path[, options])
+###### .init(path[, options])
 - path{string} watch folder paths，request
 - options{object}
     - space{number} indent value，default`2`
@@ -27,195 +31,120 @@ SassToStyles.init(<path>);
     - ignored{reg} ignored files, default`/\.(jsx?|png|jpe?g|gif|json)$/`
     - templatePath{string} automatic conversion of file template path
 
-#### 2. `scripts` in `package.json`, add
+##### 2. `scripts` in `package.json`, add
 ``` json
 "transition": "node toStyles.js"
 ```
 
-#### 3. start
+##### 3. start
 ``` javascript
 npm run transition
 ```
+##### 4、create, upload `css or sass`文件
+in the path directory of `init ()`, create or upload`css or sass`file, save. generate `js`files in the current directory.
 
-## effect
-### example 1
+### effect
 ``` scss
+$size: 12px !global;
+$color: red;
 #header {
-  font-size: 12px;
+  font-size: $size;
+  border: 1px solid $color;
   .logo {
     width: 100px;
+    margin: 0 10px 10px;
+    text-decoration: underline white solid;
   }
+}
+.main {
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
 }
 .footer {
   background: rgba(255, 255, 255, .8);
 }
+@media screen and (min-width: 500px) and (max-width: 1000px) {
+  #header {
+    width: 1000px;
+  }
+  .main {
+    font-size: 40px;
+  }
+}
 ```
-↓ ↓ ↓ ↓ ↓ ↓
+After conversion, ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
+import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
+const pixelRatio = PixelRatio.get();
+let {width, height} =  Dimensions.get('window');
 
 let styles = {
   header: {
     fontSize: 12,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "$color"
   },
   header_logo: {
     width: 100,
-  },
-  footer: {
-    backgroundColor: "rgba(255, 255, 255, .8)",
-  }
-};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### example 2
-``` scss
-/* note */
-#header {
-  // note
-  background: #888;
-  border: 1px solid #ccc;
-  flex-direction: row;
-  margin: 0 10px 10px;
-  text-decoration: underline white solid;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  header: {
-    backgroundColor: "#888",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#ccc",
-    flexDirection: "row",
     marginTop: 0,
     marginRight: 10,
     marginBottom: 10,
     marginLeft: 10,
     textDecorationLine: "underline",
     textDecorationColor: "white",
-    textDecorationStyle: "solid",
-  }
-}
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### example 3
-``` scss
-$size: 12px !global;  // global variables can be used directly in any file
-$color: red;
-#home {
-  flex-direction: column;
-  font-size: $size;
-  background: $color;
-}
-.main {
-  font-size: $size;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  home: {
-    flexDirection: "column",
-    fontSize: 12,
-    backgroundColor: "red",
+    textDecorationStyle: "solid"
   },
   main: {
-    fontSize: 12,
-  }
-};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### example 4
-``` scss
-#header{
-  font: italic bold 12px/24px "arial";
-  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
-  text-shadow: 10px 20px 5px #ccc;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  header:{
     fontStyle: "italic",
     fontWeight: "bold",
     fontSize: 12,
-    fontHeight: 24,
+    lineHeight: 24,
     fontFamily: "arial",
-    transform: {
-      translateY: 5,
-      scaleY: 3,
-      rotate: "10deg",
-      skewY: "20deg",
-    },
+    transform: [
+      {translateY: 5},
+      {scaleY: 3},
+      {rotate: "10deg"},
+      {skewY: "20deg"},
+    ],
     textShadowOffset: {
       width: 10,
       height: 20
     },
     textShadowRadio: 5,
-    textShadowColor: "#ccc",
+    textShadowColor: "#ccc"
+  },
+  footer: {
+    backgroundColor: "rgba(255, 255, 255, .8)"
   }
 };
 
-const styleSheet = StyleSheet.create(styles);
+let media = {
+  "width>=500&&width<=1000":{
+    "header":{
+      width: 1000
+    },
+    "main":{
+      fontSize: 40
+    },
+  },
+};
 
-export default styleSheet;
-```
 
-## Use Demo
-#### 1. clone 
-``` javascript
-git clone https://github.com/kszitt/react-native-sass-to-stylesheet.git
-cd react-native-sass-to-stylesheet
-```
-#### 2. install
-``` javascript
-npm install
-```
-#### 3. start server
-``` javascript
-npm run temple
-```
-#### 4. create and modify sass and css files under "temple/src" folder
-#### 5. the directory where the current CSS file is located automatically generates JS files
 
-## Template
-insert the transformed `styles`object into the template's `let styles = {};` in which it is directly referenced in `react-native`.
+// 媒体查询
+width = parseFloat((width * pixelRatio).toFixed(2));
+for(let k in media){
+  if(eval(k)){
+    for(let j in media[k]){
+      styles[j] = Object.assign(styles[j] || {}, media[k][j]);
+    }
+  }
+}
 
-### default template
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
 
-let styles = {};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### Custom Template
-create `template.js`file in the project root directory. `let styles = {};`no modification. for template
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-const pixelRatio = PixelRatio.get();
-
-let styles = {};
-
+// 适配
 for(let i in styles){
   for(let k in styles[i]){
     if(typeof styles[i][k] === "number"){
@@ -230,6 +159,35 @@ const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
 ```
+
+### Template
+default template
+``` javascript
+import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
+const pixelRatio = PixelRatio.get();
+let {width, height} =  Dimensions.get('window');
+
+/*
+自动生成区域
+*/
+
+// 适配
+for(let i in styles){
+  for(let k in styles[i]){
+    if(typeof styles[i][k] === "number"){
+      if(k !== "flex"){
+        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
+      }
+    }
+  }
+}
+
+const styleSheet = StyleSheet.create(styles);
+
+export default styleSheet;
+```
+### Custom Template
+modify the `options.template` template path in `init(path [, options])`, use your template.
 
 ## Be careful
 ##### 1. Please write SCSS in the following form. Each style has a `;`end, The number of indented cells can be customized.

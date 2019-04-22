@@ -4,7 +4,7 @@ let {width, height} =  Dimensions.get('window');
 
 
 
-
+// 适配
 for(let i in styles){
   for(let k in styles[i]){
     if(typeof styles[i][k] === "number"){

@@ -1,205 +1,149 @@
-## 语言
+### 语言
 [English](https://github.com/kszitt/react-native-sass-to-styleSheet/blob/master/README_EN.md)
 
-## 描述
-css文件自动转换成react-native样式文件。
+### 描述
+css文件自动转换成react-native样式文件。  
+1、支持变量  
+2、支持媒体查询  
+3、支持嵌套  
+4、支持`transform`
 
-## 安装
+### 安装
 ``` javascript
 npm install react-native-sass-to-stylesheet --save-dev
 ```
 
-## 使用
-#### 1、新建`toStyles.js`，并添加以下内容
+### 使用
+##### 1、新建`toStyles.js`，并添加以下内容
 ``` javascript
-const SassToStyles = require("react-native-sass-to-stylesheet");
+const ToStyles = require("react-native-sass-to-stylesheet");
 
-SassToStyles.init(<path>);
+ToStyles.init(path[, options]);
 ```
 
-##### .init(path[, options])
+###### .init(path[, options])
 - path{string} 要监听的文件夹路径，必须
 - options{object}
     - space{number} css文件缩进值，默认`2`
-    - postfix{string} 转换生成的js文件后缀，默认`Style.js`。例如：`home.scss => homeStyle.js`
+    - postfix{string} 转换生成的js文件后缀，默认`Style.js`。例如：`home.scss`转换生成`homeStyle.js`
     - initTransform{boolean} 启动服务后，是否自动转换所有的css文件，默认`false`
     - ignored{reg} 忽略文件，默认`/\.(jsx?|png|jpe?g|gif|json)$/`
-    - templatePath{string} 自动转换文件模板路径
+    - templatePath{string} 自动转换文件模板路径，默认`./template.js`
 
-#### 2、`package.json`的scripts中，添加
+##### 2、`package.json`的scripts中，添加
 ``` json
 "transition": "node toStyles.js"
 ```
 
-### 3、启动
+##### 3、启动
 ``` javascript
 npm run transition
 ```
-### 4、修改，创建css文件
-在`.init()`的`path`目录下，创建`css`或者`scss`文件，保存，会在当前目录下生成`js`文件。
+##### 4、创建，修改css文件
+在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。
 
-## 效果
-### 例1
+### 效果
 ``` scss
+$size: 12px !global;
+$color: red;
 #header {
-  font-size: 12px;
+  font-size: $size;
+  border: 1px solid $color;
   .logo {
     width: 100px;
+    margin: 0 10px 10px;
+    text-decoration: underline white solid;
   }
+}
+.main {
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
 }
 .footer {
   background: rgba(255, 255, 255, .8);
 }
+@media screen and (min-width: 500px) and (max-width: 1000px) {
+  #header {
+    width: 1000px;
+  }
+  .main {
+    font-size: 40px;
+  }
+}
 ```
-↓ ↓ ↓ ↓ ↓ ↓
+转换后，↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
+import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
+const pixelRatio = PixelRatio.get();
+let {width, height} =  Dimensions.get('window');
 
 let styles = {
   header: {
     fontSize: 12,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "$color"
   },
   header_logo: {
     width: 100,
-  },
-  footer: {
-    backgroundColor: "rgba(255, 255, 255, .8)",
-  }
-};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### 例2
-``` scss
-/* 注释 */
-#header {
-  // 注释
-  background: #888;
-  border: 1px solid #ccc;
-  flex-direction: row;
-  margin: 0 10px 10px;
-  text-decoration: underline white solid;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  header: {
-    backgroundColor: "#888",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#ccc",
-    flexDirection: "row",
     marginTop: 0,
     marginRight: 10,
     marginBottom: 10,
     marginLeft: 10,
     textDecorationLine: "underline",
     textDecorationColor: "white",
-    textDecorationStyle: "solid",
-  }
-}
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### 例3
-``` scss
-$size: 12px !global;  // 全局变量在任何文件中，都可以直接用
-$color: red;
-#home {
-  flex-direction: column;
-  font-size: $size;
-  background: $color;
-}
-.main {
-  font-size: $size;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  home: {
-    flexDirection: "column",
-    fontSize: 12,
-    backgroundColor: "red",
+    textDecorationStyle: "solid"
   },
   main: {
-    fontSize: 12,
-  }
-};
-
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### 例4
-``` scss
-#header{
-  font: italic bold 12px/24px "arial";
-  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
-  text-shadow: 10px 20px 5px #ccc;
-}
-```
-↓ ↓ ↓ ↓ ↓ ↓
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-
-let styles = {
-  header:{
     fontStyle: "italic",
     fontWeight: "bold",
     fontSize: 12,
-    fontHeight: 24,
+    lineHeight: 24,
     fontFamily: "arial",
-    transform: {
-      translateY: 5,
-      scaleY: 3,
-      rotate: "10deg",
-      skewY: "20deg",
-    },
+    transform: [
+      {translateY: 5},
+      {scaleY: 3},
+      {rotate: "10deg"},
+      {skewY: "20deg"},
+    ],
     textShadowOffset: {
       width: 10,
       height: 20
     },
     textShadowRadio: 5,
-    textShadowColor: "#ccc",
+    textShadowColor: "#ccc"
+  },
+  footer: {
+    backgroundColor: "rgba(255, 255, 255, .8)"
   }
 };
 
-const styleSheet = StyleSheet.create(styles);
+let media = {
+  "width>=500&&width<=1000":{
+    "header":{
+      width: 1000
+    },
+    "main":{
+      fontSize: 40
+    },
+  },
+};
 
-export default styleSheet;
-```
 
-## 模板
-将转换的`styles`对象插入到模板的`let styles = {};`中，在`react-native`中直接引用。  
 
-### 默认的模板
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
+// 媒体查询
+width = parseFloat((width * pixelRatio).toFixed(2));
+for(let k in media){
+  if(eval(k)){
+    for(let j in media[k]){
+      styles[j] = Object.assign(styles[j] || {}, media[k][j]);
+    }
+  }
+}
 
-let styles = {};
 
-const styleSheet = StyleSheet.create(styles);
-
-export default styleSheet;
-```
-### 使用自定义模板
-在项目根目录创建`template.js`文件，写入你的模板。其中，`let styles = {};`不可以修改。例如：
-``` javascript
-import {StyleSheet, PixelRatio} from 'react-native';
-const pixelRatio = PixelRatio.get();
-
-let styles = {};
-
+// 适配
 for(let i in styles){
   for(let k in styles[i]){
     if(typeof styles[i][k] === "number"){
@@ -215,22 +159,35 @@ const styleSheet = StyleSheet.create(styles);
 export default styleSheet;
 ```
 
-## 使用Demo
-#### 1、拉取代码 
+### 模板  
+#### 默认的模板
 ``` javascript
-git clone https://github.com/kszitt/react-native-sass-to-stylesheet.git
-cd react-native-sass-to-stylesheet
+import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
+const pixelRatio = PixelRatio.get();
+let {width, height} =  Dimensions.get('window');
+
+/*
+自动生成区域
+*/
+
+// 适配
+for(let i in styles){
+  for(let k in styles[i]){
+    if(typeof styles[i][k] === "number"){
+      if(k !== "flex"){
+        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
+      }
+    }
+  }
+}
+
+const styleSheet = StyleSheet.create(styles);
+
+export default styleSheet;
 ```
-#### 2、安装依赖
-``` javascript
-npm install
-```
-#### 3、启动服务
-``` javascript
-npm run temple
-```
-#### 4、在temple/src文件夹下创建、修改sass,css文件
-#### 5、当前css文件所在目录，自动生成js文件
+#### 使用自定义模板  
+修改`init(path[, options])`中`options.templatePath`模板路径，写入你的模板。
+
 
 ## 注意
 #### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。

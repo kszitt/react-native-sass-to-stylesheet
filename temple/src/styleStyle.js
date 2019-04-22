@@ -3,39 +3,59 @@ const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
 let styles = {
-  wrapper: {
-    flex: 1,
-    backgroundColor: "#f8f8f8"
+  header: {
+    fontSize: 12,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "$color"
   },
-  transform: {
-    height: 500,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+  header_logo: {
+    width: 100,
+    marginTop: 0,
+    marginRight: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    textDecorationLine: "underline",
+    textDecorationColor: "white",
+    textDecorationStyle: "solid"
   },
-  transform_text: {
-    height: 60,
-    lineHeight: 60,
+  main: {
+    fontStyle: "italic",
+    fontWeight: "bold",
+    fontSize: 12,
+    lineHeight: 24,
+    fontFamily: "arial",
     transform: [
-      {translateX: 100},
-      {rotate: "180deg"},
+      {translateY: 5},
+      {scaleY: 3},
+      {rotate: "10deg"},
+      {skewY: "20deg"},
     ],
-    backgroundColor: "red"
+    textShadowOffset: {
+      width: 10,
+      height: 20
+    },
+    textShadowRadio: 5,
+    textShadowColor: "#ccc"
   },
-  transform_aa: {
-    width: 100
-  },
-  flex: {
-    flex: 1
-  },
+  footer: {
+    backgroundColor: "rgba(255, 255, 255, .8)"
+  }
 };
+
 let media = {
-  "width<=1000":{
-    "body":{
-      fontSize: 12
+  "width>=500&&width<=1000":{
+    "header":{
+      width: 1000
+    },
+    "main":{
+      fontSize: 40
     },
   },
 };
+
+
+
 // 媒体查询
 width = parseFloat((width * pixelRatio).toFixed(2));
 for(let k in media){
@@ -47,7 +67,7 @@ for(let k in media){
 }
 
 
-
+// 适配
 for(let i in styles){
   for(let k in styles[i]){
     if(typeof styles[i][k] === "number"){
