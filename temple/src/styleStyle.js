@@ -3,56 +3,35 @@ const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
 let styles = {
-  header: {
-    fontSize: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "$color"
-  },
-  header_logo: {
-    width: 100,
-    marginTop: 0,
-    marginRight: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    textDecorationLine: "underline",
-    textDecorationColor: "white",
-    textDecorationStyle: "solid"
+  wrapper: {
+    flex: 1
   },
   main: {
-    fontStyle: "italic",
-    fontWeight: "bold",
-    fontSize: 12,
-    lineHeight: 24,
-    fontFamily: "arial",
-    transform: [
-      {translateY: 5},
-      {scaleY: 3},
-      {rotate: "10deg"},
-      {skewY: "20deg"},
-    ],
-    textShadowOffset: {
-      width: 10,
-      height: 20
-    },
-    textShadowRadio: 5,
-    textShadowColor: "#ccc"
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+    paddingTop: 0,
+    paddingRight: 60,
+    paddingBottom: 60,
+    paddingLeft: 60
   },
-  footer: {
-    backgroundColor: "rgba(255, 255, 255, .8)"
+  main_list: {
+    marginTop: 35,
+    marginBottom: 28
+  },
+  main_caption: {
+    fontWeight: "bold",
+    fontSize: 50,
+    lineHeight: 100,
+    color: "#333333"
+  },
+  main_p: {
+    lineHeight: 76,
+    fontSize: 44,
+    color: "#999999"
   }
 };
 
-let media = {
-  "width>=500&&width<=1000":{
-    "header":{
-      width: 1000
-    },
-    "main":{
-      fontSize: 40
-    },
-  },
-};
+let media = {};
 
 
 
