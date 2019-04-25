@@ -12,6 +12,7 @@ let watcher,
     space: 2,   // indent
     postfix: "Style.js",
     initTransform: false,
+    adaptation: true,
     ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
     templatePath: "./template.js"
   };
@@ -60,13 +61,13 @@ async function init(path, options){
   });
 
   watcher.on('ready', () => {
-    console.log(`Start monitoring ${path}`);
+    console.log(`开始监视 ${path} 目录`);
     watcher.on('change', (path) => {
       if(!/\.s?css$/.test(path)) return;
 
       let date = new Date();
       getTemplate();
-      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  Being compiled：${path}`);
+      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  开始编译：${path}`);
       Transform(path);
     });
   });

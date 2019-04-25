@@ -1,21 +1,34 @@
+$size: 12px !global;
+$color: red;
 .wrapper {
   flex: 1;
 }
+#header {
+  font-size: $size;
+  border: 1px solid $color;
+  .logo {
+    width: 100px;
+    margin: 0 10px 10px;
+    text-decoration: underline white solid;
+    .img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
 .main {
-  flex: 1;
-  background: #f8f8f8;
-  padding: 0 60px 60px;
-  .list {
-    margin-top: 35px;
-    margin-bottom: 28px;
+  font: italic bold 12px/24px "arial";
+  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
+  text-shadow: 10px 20px 5px #ccc;
+}
+.footer {
+  background: rgba(255, 255, 255, .8);
+}
+@media screen and (min-width: 500px) and (max-width: 1000px) {
+  #header {
+    width: 1000px;
   }
-  .caption {
-    font: bold 50px/100px;
-    color: #333333;
-  }
-  .p {
-    line-height: 76px;
-    font-size: 44px;
-    color: #999999;
+  .main {
+    font-size: 40px;
   }
 }

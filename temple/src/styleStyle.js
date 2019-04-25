@@ -2,37 +2,69 @@ import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
+function getAdaptation(num){
+  return parseFloat((num / pixelRatio).toFixed(2));
+}
+
 let styles = {
   wrapper: {
     flex: 1
   },
+  header: {
+    fontSize: getAdaptation(12),
+    borderWidth: getAdaptation(1),
+    borderStyle: "solid",
+    borderColor: "red"
+  },
+  header_logo: {
+    width: getAdaptation(100),
+    marginTop: 0,
+    marginRight: getAdaptation(10),
+    marginBottom: getAdaptation(10),
+    marginLeft: getAdaptation(10),
+    textDecorationLine: "underline",
+    textDecorationColor: "white",
+    textDecorationStyle: "solid"
+  },
+  header_logo_img: {
+    width: getAdaptation(100),
+    height: getAdaptation(100)
+  },
   main: {
-    flex: 1,
-    backgroundColor: "#f8f8f8",
-    paddingTop: 0,
-    paddingRight: 60,
-    paddingBottom: 60,
-    paddingLeft: 60
-  },
-  main_list: {
-    marginTop: 35,
-    marginBottom: 28
-  },
-  main_caption: {
+    fontStyle: "italic",
     fontWeight: "bold",
-    fontSize: 50,
-    lineHeight: 100,
-    color: "#333333"
+    fontSize: getAdaptation(12),
+    lineHeight: getAdaptation(24),
+    fontFamily: "arial",
+    transform: [
+      {translateY: getAdaptation(5)},
+      {scaleY: getAdaptation(3)},
+      {rotate: "10deg"},
+      {skewY: "20deg"},
+    ],
+    textShadowOffset: {
+      width: getAdaptation(10),
+      height: getAdaptation(20)
+    },
+    textShadowRadio: 5,
+    textShadowColor: "#ccc"
   },
-  main_p: {
-    lineHeight: 76,
-    fontSize: 44,
-    color: "#999999"
+  footer: {
+    backgroundColor: "rgba(255, 255, 255, .8)"
   }
 };
 
-let media = {};
 
+let media = {
+  "width>=500&&width<=1000":{
+    "header":{
+      width: getAdaptation(1000)
+    },
+    "main":{
+      fontSize: getAdaptation(40)
+    },
+  },
+};
 
 
 // 媒体查询
@@ -45,17 +77,6 @@ for(let k in media){
   }
 }
 
-
-// 适配
-for(let i in styles){
-  for(let k in styles[i]){
-    if(typeof styles[i][k] === "number"){
-      if(k !== "flex"){
-        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
-      }
-    }
-  }
-}
 
 const styleSheet = StyleSheet.create(styles);
 

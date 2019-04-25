@@ -7,6 +7,7 @@ css文件自动转换成react-native样式文件。
 2、支持媒体查询  
 3、支持嵌套  
 4、支持`transform`
+5、适配各种手机
 
 ### 安装
 ``` javascript
@@ -27,7 +28,7 @@ ToStyles.init(path[, options]);
     - space{number} css文件缩进值，默认`2`
     - postfix{string} 转换生成的js文件后缀，默认`Style.js`。例如：`home.scss`转换生成`homeStyle.js`
     - initTransform{boolean} 启动服务后，是否自动转换所有的css文件，默认`false`
-    - ignored{reg} 忽略文件，默认`/\.(jsx?|png|jpe?g|gif|json)$/`
+    - adaptation{boolean} 适配手机，默认`true`。如果单个样式不需要适配，请添加` !important`标志
     - templatePath{string} 自动转换文件模板路径，默认`./template.js`
 
 ##### 2、`package.json`的scripts中，添加
@@ -42,10 +43,13 @@ npm run transition
 ##### 4、创建，修改css文件
 在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。
 
-### 效果
+##### 5、例如：`home.scss`文件如下
 ``` scss
 $size: 12px !global;
 $color: red;
+.wrapper {
+  flex: 1;
+}
 #header {
   font-size: $size;
   border: 1px solid $color;
@@ -72,44 +76,55 @@ $color: red;
   }
 }
 ```
-转换后，↓ ↓ ↓ ↓ ↓ ↓
+##### 转换后，↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
+function getAdaptation(num){
+  return parseFloat((num / pixelRatio).toFixed(2));
+}
+
 let styles = {
+  wrapper: {
+    flex: 1
+  },
   header: {
-    fontSize: 12,
-    borderWidth: 1,
+    fontSize: getAdaptation(12),
+    borderWidth: getAdaptation(1),
     borderStyle: "solid",
-    borderColor: "$color"
+    borderColor: "red"
   },
   header_logo: {
-    width: 100,
+    width: getAdaptation(100),
     marginTop: 0,
-    marginRight: 10,
-    marginBottom: 10,
-    marginLeft: 10,
+    marginRight: getAdaptation(10),
+    marginBottom: getAdaptation(10),
+    marginLeft: getAdaptation(10),
     textDecorationLine: "underline",
     textDecorationColor: "white",
     textDecorationStyle: "solid"
   },
+  header_logo_img: {
+    width: getAdaptation(100),
+    height: getAdaptation(100)
+  },
   main: {
     fontStyle: "italic",
     fontWeight: "bold",
-    fontSize: 12,
-    lineHeight: 24,
+    fontSize: getAdaptation(12),
+    lineHeight: getAdaptation(24),
     fontFamily: "arial",
     transform: [
-      {translateY: 5},
-      {scaleY: 3},
+      {translateY: getAdaptation(5)},
+      {scaleY: getAdaptation(3)},
       {rotate: "10deg"},
       {skewY: "20deg"},
     ],
     textShadowOffset: {
-      width: 10,
-      height: 20
+      width: getAdaptation(10),
+      height: getAdaptation(20)
     },
     textShadowRadio: 5,
     textShadowColor: "#ccc"
@@ -119,17 +134,17 @@ let styles = {
   }
 };
 
+
 let media = {
   "width>=500&&width<=1000":{
     "header":{
-      width: 1000
+      width: getAdaptation(1000)
     },
     "main":{
-      fontSize: 40
+      fontSize: getAdaptation(40)
     },
   },
 };
-
 
 
 // 媒体查询
@@ -143,24 +158,32 @@ for(let k in media){
 }
 
 
-// 适配
-for(let i in styles){
-  for(let k in styles[i]){
-    if(typeof styles[i][k] === "number"){
-      if(k !== "flex"){
-        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
-      }
-    }
-  }
-}
-
 const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
 ```
+##### 6、在`react native`中使用
+``` javascript
+import Style form "homeStyle.js";
 
-### 模板  
-#### 默认的模板
+...
+
+render(){
+    return (
+        <View style={Style.wrapper}>
+           <View style={Style.header}>
+               <View style={Style.header_logo}>
+                   <Image source={...} style={Style.header_logo_img}/>
+               </View>
+           </View>
+           ...
+        </View>
+    );
+}
+```
+
+#### 自动生成模板  
+##### 默认的自动生成模板
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
@@ -170,33 +193,22 @@ let {width, height} =  Dimensions.get('window');
 自动生成区域
 */
 
-// 适配
-for(let i in styles){
-  for(let k in styles[i]){
-    if(typeof styles[i][k] === "number"){
-      if(k !== "flex"){
-        styles[i][k] = parseFloat((styles[i][k] / pixelRatio).toFixed(2));
-      }
-    }
-  }
-}
-
 const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
 ```
-#### 使用自定义模板  
+##### 使用自定义模板  
 修改`init(path[, options])`中`options.templatePath`模板路径，写入你的模板。
 
 
-## 注意
-#### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
+#### 注意
+##### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
 ``` scss
 #header {
   font-size: 12px;
 }
 ```
-#### 2、以下转换不成功，请避免使用
+##### 2、以下转换不成功，请避免使用
 ``` scss
 .aa, .bb {
 
