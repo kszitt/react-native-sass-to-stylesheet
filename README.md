@@ -6,7 +6,7 @@ css文件自动转换成react-native样式文件。
 1、支持变量  
 2、支持媒体查询  
 3、支持嵌套  
-4、支持`transform`
+4、支持`transform`  
 5、适配各种手机
 
 ### 安装
@@ -28,7 +28,7 @@ ToStyles.init(path[, options]);
     - space{number} css文件缩进值，默认`2`
     - postfix{string} 转换生成的js文件后缀，默认`Style.js`。例如：`home.scss`转换生成`homeStyle.js`
     - initTransform{boolean} 启动服务后，是否自动转换所有的css文件，默认`false`
-    - adaptation{boolean} 适配手机，默认`true`。如果单个样式不需要适配，请添加` !important`标志
+    - adaptation{boolean} 适配各种手机，默认`true`。如果单个样式不需要适配，请添加` !important`标志
     - templatePath{string} 自动转换文件模板路径，默认`./template.js`
 
 ##### 2、`package.json`的scripts中，添加
@@ -164,7 +164,7 @@ export default styleSheet;
 ```
 ##### 6、在`react native`中使用
 ``` javascript
-import Style form "homeStyle.js";
+import Style from "homeStyle.js";
 
 ...
 
@@ -182,7 +182,7 @@ render(){
 }
 ```
 
-#### 自动生成模板  
+### 自动生成模板  
 ##### 默认的自动生成模板
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
@@ -201,7 +201,7 @@ export default styleSheet;
 修改`init(path[, options])`中`options.templatePath`模板路径，写入你的模板。
 
 
-#### 注意
+### 注意
 ##### 1、请按照类似以下形式，编写scss。每个样式后面有`;`结尾，缩进格数可以自定义。
 ``` scss
 #header {
