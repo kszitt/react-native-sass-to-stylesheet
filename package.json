@@ -1,6 +1,6 @@
 {
   "name": "react-native-sass-to-stylesheet",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "sass and css file transform to react-native stylesheet",
   "main": "index.js",
   "scripts": {
