@@ -17,7 +17,7 @@ css file transform to react-native stylesheet
   - [start](#start)
   - [writing SCSS file](#writing-scss-file)
   - [after transform](#after-transform)
-  - [use in RN](#use-in-rn)
+  - [use in react native](#use-in-react-native)
 - [Examples](#examples)
   - [font](#font)
   - [padding](#padding)
@@ -44,7 +44,7 @@ create`toStyles.js`, this content
 ``` javascript
 const SassToStyles = require("react-native-sass-to-stylesheet");
 
-SassToStyles.init(<path>);
+SassToStyles.init(path[, options]);
 ```
 .init(path[, options])  
 - path{string} watch folder paths，request
@@ -101,7 +101,7 @@ let styles = {
 const styleSheet = StyleSheet.create(styles);
 export default styleSheet;
 ```
-##### use in RN
+##### use in react native
 ``` javascript
 import Style from "homeStyle.js";
 ...
@@ -126,7 +126,6 @@ render(){
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     fontVariant: [
@@ -140,7 +139,6 @@ let styles = {
     fontFamily: "Arial"
   }
 };
-...
 ```
 ##### padding
 ``` scss
@@ -152,7 +150,6 @@ let styles = {
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     marginTop: 0,
@@ -166,7 +163,6 @@ let styles = {
     backgroundColor: "red"
   }
 };
-...
 ```
 ##### border
 ``` scss
@@ -227,7 +223,6 @@ let styles = {
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     transform: [
@@ -247,7 +242,6 @@ let styles = {
     ]
   }
 };
-...
 ```
 ##### variable
 ``` scss
@@ -262,7 +256,6 @@ $color: red;
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   header: {
     fontSize: getAdaptation(12),
@@ -272,7 +265,6 @@ let styles = {
     color: "red"
   }
 };
-...
 ```
 ##### group selector
 ``` scss
@@ -289,7 +281,6 @@ let styles = {
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     display: "flex"
@@ -303,7 +294,6 @@ let styles = {
     left: 0
   }
 };
-...
 ```
 ##### media query
 ``` scss
@@ -357,7 +347,8 @@ let media = {
     }
   }
 }());
-...
+const styleSheet = StyleSheet.create(styles);
+export default styleSheet;
 ```
 
 ### Automatic Template Generation

@@ -17,7 +17,7 @@ css文件自动转换成react-native样式文件。
   - [启动](#启动)
   - [SCSS文件](#SCSS文件)
   - [转换后](#转换后)
-  - [在RN中使用](#在RN中使用)
+  - [在react native中使用](#在react-native中使用)
 - [示例](#示例)
   - [font](#font)
   - [padding](#padding)
@@ -54,7 +54,6 @@ ToStyles.init(path[, options]);
     - adaptation{boolean} 适配各种手机，默认`true`。如果单个样式不需要适配，请添加` !important`标志
     - templatePath{string} 自动转换文件模板路径，默认`./template.js`
 ##### 启动  
-`package.json`的scripts中，添加
 ``` javascript
 node toStyles.js
 ```
@@ -99,7 +98,7 @@ let styles = {
 const styleSheet = StyleSheet.create(styles);
 export default styleSheet;
 ```
-##### 在RN中使用
+##### 在react native中使用
 ``` javascript
 import Style from "homeStyle.js";
 ...
