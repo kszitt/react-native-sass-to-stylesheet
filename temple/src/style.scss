@@ -1,34 +1,10 @@
-$size: 12px !global;
-$color: red;
-.wrapper {
-  flex: 1;
-}
-#header {
-  font-size: $size;
-  border: 1px solid $color;
+.header {
+  font: 12px/24px;
   .logo {
-    width: 100px;
-    margin: 0 10px 10px;
-    text-decoration: underline white solid;
+    position: absolute;
     .img {
       width: 100px;
       height: 100px;
     }
-  }
-}
-.main {
-  font: italic bold 12px/24px "arial";
-  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
-  text-shadow: 10px 20px 5px #ccc;
-}
-.footer {
-  background: rgba(255, 255, 255, .8);
-}
-@media screen and (min-width: 500px) and (max-width: 1000px) {
-  #header {
-    width: 1000px;
-  }
-  .main {
-    font-size: 40px;
   }
 }

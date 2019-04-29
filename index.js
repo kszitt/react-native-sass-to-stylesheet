@@ -54,6 +54,7 @@ async function init(path, options){
 
   if(params.initTransform){
     await AutoWriteStyles(path);
+    return;
   }
 
   watcher = chokidar.watch(path, {

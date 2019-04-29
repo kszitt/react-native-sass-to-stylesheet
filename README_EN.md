@@ -8,21 +8,43 @@ css file transform to react-native stylesheet
 3. support nesting  
 4. support `transform`  
 5. adapt to all kinds of mobile phones
+6. support group selector
 
-### install
+### Summary
+- [Install](#Install)
+- [Use](#Use)
+  - [init](#init)
+  - [start](#start)
+  - [writing CSS file](#writing CSS file)
+  - [for example](#for example)
+  - [use in react native](#use in react native)
+- [Examples](#Examples)
+  - [font](#font)
+  - [margin padding background](#margin padding background)
+  - [border text-decoration text-shadow](#border text-decoration text-shadow)
+  - [transform](#transform)
+  - [variable](#variable)
+  - [group selector](#group selector)
+  - [media query](#media query)
+- [Automatic Template Generation](#Automatic Template Generation)
+  - [default automatic template generation](#default automatic template generation)
+  - [custom Automatic Template Generation](#custom Automatic Template Generation)
+
+
+### Install
 ``` javascript
 npm install react-native-sass-to-stylesheet --save-dev
 ```
 
-### use
-##### 1. create`toStyles.js`, this content
+### Use
+##### init  
+create`toStyles.js`, this content
 ``` javascript
 const SassToStyles = require("react-native-sass-to-stylesheet");
 
 SassToStyles.init(<path>);
 ```
-
-###### .init(path[, options])
+.init(path[, options])  
 - path{string} watch folder paths，request
 - options{object}
     - space{number} indent value，default`2`
@@ -31,160 +53,291 @@ SassToStyles.init(<path>);
     - initTransform{boolean} Whether to automatically convert all CSS files after starting the service, default`false`
     - adaptation{boolean} adapt to all kinds of mobile phones, default`true`. if a single style does not need to be adapted, Please add the ` !important`sign
     - templatePath{string} automatic conversion of file template path
-
-##### 2. `scripts` in `package.json`, add
-``` json
-"transition": "node toStyles.js"
-```
-
-##### 3. start
+##### start
 ``` javascript
-npm run transition
+node toStyles.js
 ```
-##### 4、create, upload `css or sass`文件
+##### writing CSS file
 in the path directory of `init ()`, create or upload`css or sass`file, save. generate `js`files in the current directory.
-
-##### 5、for example: `home.scss`file is as follows
+##### for example   
+`home.scss` file is as follows
 ``` scss
-$size: 12px !global;
-$color: red;
-.wrapper {
-  flex: 1;
-}
-#header {
-  font-size: $size;
-  border: 1px solid $color;
+.header {
+  font: 12px/24px;
   .logo {
-    width: 100px;
-    margin: 0 10px 10px;
-    text-decoration: underline white solid;
-  }
-}
-.main {
-  font: italic bold 12px/24px "arial";
-  transform: translateY(5px) scaleY(3) rotate(10deg) skewY(20deg);
-  text-shadow: 10px 20px 5px #ccc;
-}
-.footer {
-  background: rgba(255, 255, 255, .8);
-}
-@media screen and (min-width: 500px) and (max-width: 1000px) {
-  #header {
-    width: 1000px;
-  }
-  .main {
-    font-size: 40px;
+    position: absolute;
+    .img {
+      width: 100px;
+      height: 100px;
+    }
   }
 }
 ```
-##### after conversion, ↓ ↓ ↓ ↓ ↓ ↓
+↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
-function getAdaptation(num){
+function getAdaptation(num){    // You can customize this function in the options. template Path template
   return parseFloat((num / pixelRatio).toFixed(2));
 }
 
 let styles = {
-  wrapper: {
-    flex: 1
-  },
   header: {
     fontSize: getAdaptation(12),
-    borderWidth: getAdaptation(1),
-    borderStyle: "solid",
-    borderColor: "red"
+    lineHeight: getAdaptation(24)
   },
   header_logo: {
-    width: getAdaptation(100),
-    marginTop: 0,
-    marginRight: getAdaptation(10),
-    marginBottom: getAdaptation(10),
-    marginLeft: getAdaptation(10),
-    textDecorationLine: "underline",
-    textDecorationColor: "white",
-    textDecorationStyle: "solid"
+    position: "absolute"
   },
   header_logo_img: {
     width: getAdaptation(100),
     height: getAdaptation(100)
-  },
-  main: {
-    fontStyle: "italic",
-    fontWeight: "bold",
-    fontSize: getAdaptation(12),
-    lineHeight: getAdaptation(24),
-    fontFamily: "arial",
-    transform: [
-      {translateY: getAdaptation(5)},
-      {scaleY: getAdaptation(3)},
-      {rotate: "10deg"},
-      {skewY: "20deg"},
-    ],
-    textShadowOffset: {
-      width: getAdaptation(10),
-      height: getAdaptation(20)
-    },
-    textShadowRadio: 5,
-    textShadowColor: "#ccc"
-  },
-  footer: {
-    backgroundColor: "rgba(255, 255, 255, .8)"
   }
 };
-
-
-let media = {
-  "width>=500&&width<=1000":{
-    "header":{
-      width: getAdaptation(1000)
-    },
-    "main":{
-      fontSize: getAdaptation(40)
-    },
-  },
-};
-
-
-// 媒体查询
-width = parseFloat((width * pixelRatio).toFixed(2));
-for(let k in media){
-  if(eval(k)){
-    for(let j in media[k]){
-      styles[j] = Object.assign(styles[j] || {}, media[k][j]);
-    }
-  }
-}
-
 
 const styleSheet = StyleSheet.create(styles);
-
 export default styleSheet;
 ```
-##### 6、use in `react native`.
+##### use in react native
 ``` javascript
 import Style from "homeStyle.js";
-
 ...
-
 render(){
     return (
-        <View style={Style.wrapper}>
-           <View style={Style.header}>
-               <View style={Style.header_logo}>
-                   <Image source={...} style={Style.header_logo_img}/>
-               </View>
-           </View>
-           ...
+        <View style={Style.header}>
+            <View style={Style.header_logo}>
+                <Image source={...} style={Style.header_logo_img}/>
+            </View>
         </View>
     );
 }
 ```
 
+### Examples
+##### font
+``` scss
+.main {
+  font: italic bold 12px/24px "Arial";
+  font-variant: small-caps, lining-nums;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  main: {
+    fontVariant: [
+      "small-caps",
+      "lining-nums"
+    ],
+    fontSize: getAdaptation(12),
+    lineHeight: getAdaptation(24),
+    fontStyle: "italic",
+    fontWeight: "bold",
+    fontFamily: "Arial"
+  }
+};
+...
+```
+##### margin padding background
+``` scss
+.main {
+  margin: 0 10px;
+  padding: 1px 2px 3px;
+  background: red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  main: {
+    marginTop: 0,
+    marginBottom: 0,
+    marginRight: getAdaptation(10),
+    marginLeft: getAdaptation(10),
+    paddingTop: getAdaptation(1),
+    paddingBottom: getAdaptation(3),
+    paddingRight: getAdaptation(2),
+    paddingLeft: getAdaptation(2),
+    backgroundColor: "red"
+  }
+};
+...
+```
+##### border text-decoration text-shadow
+``` scss
+.main {
+  border: 1px solid #333;
+  text-decoration: underline double red;
+  text-shadow: 5px 5px 10px red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  main: {
+    borderWidth: getAdaptation(1),
+    borderColor: "#333",
+    borderStyle: "solid",
+    textDecorationLine: "underline",
+    textDecorationColor: "double red",
+    textShadowOffset: {
+      width: getAdaptation(5),
+      height: getAdaptation(5)
+    },
+    textShadowRadio: getAdaptation(10),
+    textShadowColor: "red"
+  }
+};
+...
+```
+##### transform
+``` scss
+.main {
+  transform: translate(10px, 20px) rotateY(-10.3deg) scaleX(.5) skew(60deg);
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  main: {
+    transform: [
+      {
+        translateX: getAdaptation(10),
+        translateY: getAdaptation(20)
+      },
+      {
+        rotateY: "-10.3deg"
+      },
+      {
+        scaleX: .5
+      },
+      {
+        skewX: "60deg"
+      }
+    ]
+  }
+};
+...
+```
+##### variable
+``` scss
+$size: 12px !global; // other pages can also be used
+$color: red;
+.header {
+  font: $size/24px;
+  .left {
+    color: $color;
+  }
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  header: {
+    fontSize: getAdaptation(12),
+    lineHeight: getAdaptation(24)
+  },
+  header_left: {
+    color: "red"
+  }
+};
+...
+```
+##### group selector
+``` scss
+.main {
+  display: flex;
+  .left, .right {
+    position: absolute;
+    left: 0;
+  }
+  .left {
+    left: 10px;
+  }
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+...
+let styles = {
+  main: {
+    display: "flex"
+  },
+  main_left: {
+    position: "absolute",
+    left: getAdaptation(10)
+  },
+  main_right: {
+    position: "absolute",
+    left: 0
+  }
+};
+...
+```
+##### media query
+``` scss
+.main {
+  width: 500px;
+}
+@media only screen and (min-width: 500px) and (max-width: 1000px) {
+  .main {
+    width: 100%;
+    height: 1000px;
+  }
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
+const pixelRatio = PixelRatio.get();
+let {width, height} =  Dimensions.get('window');
+
+function getAdaptation(num){    // You can customize this function in the options. template Path template
+  return parseFloat((num / pixelRatio).toFixed(2));
+}
+
+let styles = {
+  main: {
+    width: getAdaptation(500)
+  },
+  main_top: {
+    fontSize: getAdaptation(12)
+  }
+};
+
+
+let media = {
+  "width>=500&&width<=1000": {
+    main: {
+      width: "100%",
+      height: getAdaptation(1000)
+    }
+  }
+};
+
+// 媒体查询
+(function addMedia(){   // // You can customize this function in the options. template Path template
+  width = parseFloat((width * pixelRatio).toFixed(2));
+  for(let k in media){
+    if(eval(k)){
+      for(let j in media[k]){
+        styles[j] = Object.assign(styles[j] || {}, media[k][j]);
+      }
+    }
+  }
+}());
+...
+```
+
 ### Automatic Template Generation
-default automatic template generation
+##### default automatic template generation
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
@@ -198,22 +351,5 @@ const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
 ```
-##### Custom Automatic Template Generation
+##### custom Automatic Template Generation
 modify the `options.template` template path in `init(path [, options])`, use your template.
-
-### Be careful
-##### 1. Please write SCSS in the following form. Each style has a `;`end, The number of indented cells can be customized.
-``` scss
-#header {
-  font-size: 12px;
-}
-```
-##### 2. The following conversion is unsuccessful. Avoid using it
-``` scss
-.aa, .bb {
-
-}
-.cc .dd {
-
-}
-```
