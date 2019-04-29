@@ -10,29 +10,6 @@ css文件自动转换成react-native样式文件。
 5、适配各种手机  
 6、支持群组选择器
 
-### 概述
-- [安装](#安装)
-- [使用](#使用)
-  - [初始化](#初始化)
-  - [启动](#启动)
-  - [SCSS文件](#SCSS文件)
-  - [转换后](#转换后)
-  - [在react native中使用](#在react-native中使用)
-- [示例](#示例)
-  - [font](#font)
-  - [margin, padding](#margin-padding)
-  - [border](#border)
-  - [textDecoration](#text-decoration)
-  - [textShadow](#text-shadow)
-  - [shadow](#shadow)
-  - [transform](#transform)
-  - [变量](#变量)
-  - [群组选择器](#群组选择器)
-  - [媒体查询](#媒体查询)
-- [自动生成模板](#自动生成模板)
-  - [默认的自动生成模板](#默认的自动生成模板)
-  - [使用自定义模板](#使用自定义模板)
-
 ### 安装
 ``` javascript
 npm install react-native-sass-to-stylesheet --save-dev
