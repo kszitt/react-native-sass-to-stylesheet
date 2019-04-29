@@ -2,11 +2,19 @@ import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
+function getAdaptation(num){
+  return parseFloat((num / pixelRatio).toFixed(2));
+}
+
 let styles = {
   header: {
-    textDecorationLine: "underline",
-    textDecorationColor: "red",
-    textDecorationStyle: "solid"
+    shadowOffset: {
+      width: getAdaptation(10),
+      height: getAdaptation(10)
+    },
+    shadowRadio: getAdaptation(5),
+    shadowOpacity: 0.5,
+    shadowColor: "#888888"
   }
 };
 

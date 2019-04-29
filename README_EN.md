@@ -20,10 +20,11 @@ css file transform to react-native stylesheet
   - [use in react native](#use-in-react-native)
 - [Examples](#examples)
   - [font](#font)
-  - [padding](#padding)
+  - [margin, padding](#margin-padding)
   - [border](#border)
-  - [text-decoration](#text-decoration)
-  - [text-shadow](#text-shadow)
+  - [textDecoration](#text-decoration)
+  - [textShadow](#text-shadow)
+  - [shadow](#shadow)
   - [transform](#transform)
   - [variable](#variable)
   - [group selector](#group-selector)
@@ -140,12 +141,11 @@ let styles = {
   }
 };
 ```
-##### padding
+##### margin padding
 ``` scss
 .main {
   margin: 0 10px;
   padding: 1px 2px 3px;
-  background: red;
 }
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
@@ -160,7 +160,6 @@ let styles = {
     paddingBottom: getAdaptation(3),
     paddingRight: getAdaptation(2),
     paddingLeft: getAdaptation(2),
-    backgroundColor: "red"
   }
 };
 ```
@@ -212,6 +211,26 @@ let styles = {
     },
     textShadowRadio: getAdaptation(10),
     textShadowColor: "red"
+  }
+};
+```
+##### shadow
+``` scss
+.main {
+  box-shadow: 10px 10px 5px .5 #888888;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    shadowOffset: {
+      width: getAdaptation(10),
+      height: getAdaptation(10)
+    },
+    shadowRadio: getAdaptation(5),
+    shadowOpacity: .5,
+    shadowColor: "#888888"
   }
 };
 ```

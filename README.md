@@ -20,10 +20,11 @@ css文件自动转换成react-native样式文件。
   - [在react native中使用](#在react-native中使用)
 - [示例](#示例)
   - [font](#font)
-  - [padding](#padding)
+  - [margin, padding](#margin-padding)
   - [border](#border)
-  - [text-decoration](#text-decoration)
-  - [text-shadow](#text-shadow)
+  - [textDecoration](#text-decoration)
+  - [textShadow](#text-shadow)
+  - [shadow](#shadow)
   - [transform](#transform)
   - [变量](#变量)
   - [群组选择器](#群组选择器)
@@ -58,7 +59,7 @@ ToStyles.init(path[, options]);
 node toStyles.js
 ```
 ##### SCSS文件
-在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。例如
+在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。例如：`home.scss`如下 
 ``` scss
 .header {
   font: 12px/24px;
@@ -71,7 +72,7 @@ node toStyles.js
   }
 }
 ```
-##### 转换后
+##### 转换后，生成的`homeStyle.js`
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
@@ -137,9 +138,10 @@ let styles = {
   }
 };
 ```
-##### padding
+##### margin padding
 ``` scss
 .main {
+  margin: 0 10px;
   padding: 1px 2px 3px;
 }
 ```
@@ -147,6 +149,10 @@ let styles = {
 ``` javascript
 let styles = {
   main: {
+    marginTop: 0,
+    marginBottom: 0,
+    marginRight: getAdaptation(10),
+    marginLeft: getAdaptation(10),
     paddingTop: getAdaptation(1),
     paddingBottom: getAdaptation(3),
     paddingRight: getAdaptation(2),
@@ -202,6 +208,26 @@ let styles = {
     },
     textShadowRadio: getAdaptation(10),
     textShadowColor: "red"
+  }
+};
+```
+##### shadow
+``` scss
+.main {
+  box-shadow: 10px 10px 5px .5 #888888;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    shadowOffset: {
+      width: getAdaptation(10),
+      height: getAdaptation(10)
+    },
+    shadowRadio: getAdaptation(5),
+    shadowOpacity: .5,
+    shadowColor: "#888888"
   }
 };
 ```
@@ -337,7 +363,8 @@ let media = {
     }
   }
 }());
-...
+const styleSheet = StyleSheet.create(styles);
+export default styleSheet;
 ```
 
 ### 自动生成模板  
