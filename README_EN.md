@@ -11,24 +11,26 @@ css file transform to react-native stylesheet
 6. support group selector
 
 ### Summary
-- [Install](#Install)
-- [Use](#Use)
+- [Install](#install)
+- [Use](#use)
   - [init](#init)
   - [start](#start)
-  - [writing CSS file](#writing CSS file)
-  - [for example](#for example)
-  - [use in react native](#use in react native)
-- [Examples](#Examples)
+  - [writing SCSS file](#writing-scss-file)
+  - [after transform](#after-transform)
+  - [use in RN](#use-in-rn)
+- [Examples](#examples)
   - [font](#font)
-  - [margin padding background](#margin padding background)
-  - [border text-decoration text-shadow](#border text-decoration text-shadow)
+  - [padding](#padding)
+  - [border](#border)
+  - [text-decoration](#text-decoration)
+  - [text-shadow](#text-shadow)
   - [transform](#transform)
   - [variable](#variable)
-  - [group selector](#group selector)
-  - [media query](#media query)
-- [Automatic Template Generation](#Automatic Template Generation)
-  - [default automatic template generation](#default automatic template generation)
-  - [custom Automatic Template Generation](#custom Automatic Template Generation)
+  - [group selector](#group-selector)
+  - [media query](#media-query)
+- [Automatic Template Generation](#automatic-template-generation)
+  - [default automatic template generation](#default-automatic-template-generation)
+  - [custom Automatic Template Generation](#custom-automatic-template-generation)
 
 
 ### Install
@@ -57,9 +59,8 @@ SassToStyles.init(<path>);
 ``` javascript
 node toStyles.js
 ```
-##### writing CSS file
-in the path directory of `init ()`, create or upload`css or sass`file, save. generate `js`files in the current directory.
-##### for example   
+##### writing SCSS file
+in the path directory of `init ()`, create or upload`css or sass`file, save. generate `js`files in the current directory.  
 `home.scss` file is as follows
 ``` scss
 .header {
@@ -73,7 +74,7 @@ in the path directory of `init ()`, create or upload`css or sass`file, save. gen
   }
 }
 ```
-↓ ↓ ↓ ↓ ↓ ↓
+##### after transform
 ``` javascript
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
@@ -100,7 +101,7 @@ let styles = {
 const styleSheet = StyleSheet.create(styles);
 export default styleSheet;
 ```
-##### use in react native
+##### use in RN
 ``` javascript
 import Style from "homeStyle.js";
 ...
@@ -141,7 +142,7 @@ let styles = {
 };
 ...
 ```
-##### margin padding background
+##### padding
 ``` scss
 .main {
   margin: 0 10px;
@@ -167,24 +168,48 @@ let styles = {
 };
 ...
 ```
-##### border text-decoration text-shadow
+##### border
 ``` scss
 .main {
   border: 1px solid #333;
-  text-decoration: underline double red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    borderWidth: getAdaptation(1),
+    borderColor: "#333",
+    borderStyle: "solid"
+  }
+};
+```
+##### text-decoration
+``` scss
+.main {
+  text-decoration: underline solid red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    textDecorationLine: "underline",
+    textDecorationColor: "red",
+    textDecorationStyle: "solid"
+  }
+};
+```
+##### text-shadow
+``` scss
+.main {
   text-shadow: 5px 5px 10px red;
 }
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
-    borderWidth: getAdaptation(1),
-    borderColor: "#333",
-    borderStyle: "solid",
-    textDecorationLine: "underline",
-    textDecorationColor: "double red",
     textShadowOffset: {
       width: getAdaptation(5),
       height: getAdaptation(5)
@@ -193,7 +218,6 @@ let styles = {
     textShadowColor: "red"
   }
 };
-...
 ```
 ##### transform
 ``` scss

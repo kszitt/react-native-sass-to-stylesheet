@@ -15,17 +15,18 @@ css文件自动转换成react-native样式文件。
 - [使用](#使用)
   - [初始化](#初始化)
   - [启动](#启动)
-  - [编写SCSS文件](#编写SCSS文件)
   - [SCSS文件](#SCSS文件)
   - [转换后](#转换后)
   - [在RN中使用](#在RN中使用)
 - [示例](#示例)
   - [font](#font)
-  - [margin padding background](#margin padding background)
-  - [border text-decoration text-shadow](#border text-decoration text-shadow)
+  - [padding](#padding)
+  - [border](#border)
+  - [text-decoration](#text-decoration)
+  - [text-shadow](#text-shadow)
   - [transform](#transform)
   - [变量](#变量)
-  - [群组选择器](#群组选择器，优先级低)
+  - [群组选择器](#群组选择器)
   - [媒体查询](#媒体查询)
 - [自动生成模板](#自动生成模板)
   - [默认的自动生成模板](#默认的自动生成模板)
@@ -57,9 +58,8 @@ ToStyles.init(path[, options]);
 ``` javascript
 node toStyles.js
 ```
-##### 编写SCSS文件
-在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。
 ##### SCSS文件
+在`.init()`的`path`目录下，创建、修改`css`或者`scss`文件，保存。会在当前目录下生成`js`文件。例如
 ``` scss
 .header {
   font: 12px/24px;
@@ -124,7 +124,6 @@ render(){
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     fontVariant: [
@@ -138,52 +137,66 @@ let styles = {
     fontFamily: "Arial"
   }
 };
-...
 ```
-##### margin padding background
+##### padding
 ``` scss
 .main {
-  margin: 0 10px;
   padding: 1px 2px 3px;
-  background: red;
 }
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
-    marginTop: 0,
-    marginBottom: 0,
-    marginRight: getAdaptation(10),
-    marginLeft: getAdaptation(10),
     paddingTop: getAdaptation(1),
     paddingBottom: getAdaptation(3),
     paddingRight: getAdaptation(2),
     paddingLeft: getAdaptation(2),
-    backgroundColor: "red"
   }
 };
-...
 ```
-##### border text-decoration text-shadow
+##### border
 ``` scss
 .main {
   border: 1px solid #333;
-  text-decoration: underline double red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    borderWidth: getAdaptation(1),
+    borderColor: "#333",
+    borderStyle: "solid"
+  }
+};
+```
+##### text-decoration
+``` scss
+.main {
+  text-decoration: underline solid red;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  main: {
+    textDecorationLine: "underline",
+    textDecorationColor: "red",
+    textDecorationStyle: "solid"
+  }
+};
+```
+##### text-shadow
+``` scss
+.main {
   text-shadow: 5px 5px 10px red;
 }
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
-    borderWidth: getAdaptation(1),
-    borderColor: "#333",
-    borderStyle: "solid",
-    textDecorationLine: "underline",
-    textDecorationColor: "double red",
     textShadowOffset: {
       width: getAdaptation(5),
       height: getAdaptation(5)
@@ -192,7 +205,6 @@ let styles = {
     textShadowColor: "red"
   }
 };
-...
 ```
 ##### transform
 ``` scss
@@ -202,7 +214,6 @@ let styles = {
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     transform: [
@@ -222,7 +233,6 @@ let styles = {
     ]
   }
 };
-...
 ```
 ##### 变量
 ``` scss
@@ -237,7 +247,6 @@ $color: red;
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   header: {
     fontSize: getAdaptation(12),
@@ -247,9 +256,8 @@ let styles = {
     color: "red"
   }
 };
-...
 ```
-##### 群组选择器，优先级低
+##### 群组选择器
 ``` scss
 .main {
   display: flex;
@@ -264,7 +272,6 @@ let styles = {
 ```
 ↓ ↓ ↓ ↓ ↓ ↓
 ``` javascript
-...
 let styles = {
   main: {
     display: "flex"
@@ -278,7 +285,6 @@ let styles = {
     left: 0
   }
 };
-...
 ```
 ##### 媒体查询
 ``` scss
