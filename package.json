@@ -1,7 +1,7 @@
 {
   "name": "react-native-sass-to-stylesheet",
   "version": "2.0.2",
-  "description": "sass and css file transform to react-native stylesheet",
+  "description": "css和sass文件自动转换成react-native样式文件",
   "main": "index.js",
   "scripts": {
     "temple": "node temple/toStyles.js"
@@ -20,6 +20,7 @@
     "css",
     "stylesheet",
     "transition",
+    "sass-to-stylesheet",
     "css-to-stylesheet"
   ],
   "dependencies": {
