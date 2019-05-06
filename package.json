@@ -1,6 +1,6 @@
 {
   "name": "react-native-sass-to-stylesheet",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "css和sass文件自动转换成react-native样式文件",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "css-to-stylesheet"
   ],
   "dependencies": {
-    "chokidar": "^2.1.2"
+    "chokidar": "^2.1.2",
+    "md5": "^2.2.1"
   }
 }

@@ -1,4 +1,5 @@
 const chokidar = require('chokidar');
+const md5 = require('md5');
 const Transform = require("./lib/transform");
 const AutoWriteStyles = require("./lib/autoWriteStyles");
 const {SetGlobal} = require("./lib/variable");
@@ -7,7 +8,7 @@ const SassToStyles = {};
 
 
 
-let watcher,
+let compile = {},
   params = {
     space: 2,   // indent
     postfix: "Style.js",
@@ -56,19 +57,36 @@ async function init(path, options){
     await AutoWriteStyles(path);
   }
 
-  watcher = chokidar.watch(path, {
+  let watcher = chokidar.watch(path, {
     ignored: params.ignored
   });
 
   watcher.on('ready', () => {
     console.log(`开始监视 ${path} 目录`);
-    watcher.on('change', (path) => {
+    watcher.on('change', async (path) => {
       if(!/\.s?css$/.test(path)) return;
 
+      let data = GetFileContent(path);
+      if(data === "") return;
+
+      data = JSON.stringify(data);
+      dataMd5 = md5(data);
+
+      if(compile[path] === dataMd5) {
+        return;
+      }
+
+      compile[path] = dataMd5;
       let date = new Date();
-      getTemplate();
       console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  开始编译：${path}`);
-      Transform(path);
+      await Transform(path);
+    });
+  });
+
+  let template = chokidar.watch(params.templatePath);
+  template.on("ready", () => {
+    template.on('change', (path) => {
+      getTemplate();
     });
   });
 }
