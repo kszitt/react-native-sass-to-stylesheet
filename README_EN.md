@@ -383,9 +383,8 @@ function getAdaptation(num){
   return parseFloat((num*unitWidth).toFixed(2));
 }
 
-/*
-自动生成区域
-*/
+let styles = {};
+let media = {};
 
 const styleSheet = StyleSheet.create(styles);
 

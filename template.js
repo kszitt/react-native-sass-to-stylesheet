@@ -7,6 +7,9 @@ function getAdaptation(num){
   return parseFloat((num*unitWidth).toFixed(2));
 }
 
+let styles = {};
+let media = {};
+
 const styleSheet = StyleSheet.create(styles);
 
 export default styleSheet;
