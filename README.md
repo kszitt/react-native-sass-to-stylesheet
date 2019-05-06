@@ -56,7 +56,8 @@ const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
 function getAdaptation(num){    // 可以在"options.templatePath"模板中自定义该函数
-  return parseFloat((num / pixelRatio).toFixed(2));
+  let unitWidth = width / 1080; // 1080 => UI设计图的宽度
+  return parseFloat((num*unitWidth).toFixed(2));
 }
 
 let styles = {
@@ -307,7 +308,8 @@ const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
 function getAdaptation(num){    // 可以在"options.templatePath"模板中自定义该函数
-  return parseFloat((num / pixelRatio).toFixed(2));
+  let unitWidth = width / 1080; // 1080 => UI设计图的宽度
+  return parseFloat((num*unitWidth).toFixed(2));
 }
 
 let styles = {
@@ -331,7 +333,6 @@ let media = {
 
 // 媒体查询
 (function addMedia(){   // 可以在"options.templatePath"模板中自定义该函数
-  width = parseFloat((width * pixelRatio).toFixed(2));
   for(let k in media){
     if(eval(k)){
       for(let j in media[k]){
@@ -350,6 +351,11 @@ export default styleSheet;
 import {StyleSheet, PixelRatio, Dimensions} from 'react-native';
 const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
+
+function getAdaptation(num){
+  let unitWidth = width / 1080; // 1080 => UI设计图的宽度
+  return parseFloat((num*unitWidth).toFixed(2));
+}
 
 /*
 自动生成区域
