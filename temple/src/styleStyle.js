@@ -3,10 +3,10 @@ const pixelRatio = PixelRatio.get();
 let {width, height} =  Dimensions.get('window');
 
 function getAdaptation(num){
-  return parseFloat((num / pixelRatio).toFixed(2));
+  let unitWidth = width / 1080; // 1080 => UI设计图的宽度
+  return parseFloat((num*unitWidth).toFixed(2));
 }
-
-let styles = {
+let styles = {
   header: {
     shadowOffset: {
       width: getAdaptation(10),
@@ -17,8 +17,6 @@ let styles = {
     shadowColor: "#888888"
   }
 };
-
-
 
 const styleSheet = StyleSheet.create(styles);
 
