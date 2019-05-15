@@ -1,5 +1,6 @@
 const chokidar = require('chokidar');
 const md5 = require('md5');
+const OS = require('os');
 const Transform = require("./lib/transform");
 const AutoWriteStyles = require("./lib/autoWriteStyles");
 const {SetGlobal} = require("./lib/variable");
@@ -14,7 +15,7 @@ let compile = {},
     postfix: "Style.js",
     initTransform: false,
     adaptation: true,
-    ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
+    ignored: [],
     templatePath: "./template.js"
   };
 
@@ -58,7 +59,7 @@ async function init(path, options){
   }
 
   let watcher = chokidar.watch(path, {
-    ignored: params.ignored
+    ignored: /\.(jsx?|png|jpe?g|gif|json)$/,
   });
 
   watcher.on('ready', () => {
@@ -68,15 +69,31 @@ async function init(path, options){
 
       let data = GetFileContent(path);
       if(data === "") return;
-
       data = JSON.stringify(data);
       dataMd5 = md5(data);
-
       if(compile[path] === dataMd5) {
         return;
       }
-
       compile[path] = dataMd5;
+
+      // 忽略文件
+      for(let item of params.ignored){
+        if(/\./.test(item)){   // 文件
+          if(eval('/'+ item +'$/').test(path)){
+            console.log(path, "忽略");
+            return;
+          }
+        } else {   // 文件夹
+          if(OS.platform() === "win32") item = item.replace(/\//, "\\\\");
+          if(eval('/'+ item.replace(/\//, "\\\\") +'/').test(path)){
+            console.log(path, "忽略");
+            return;
+          }
+
+        }
+      }
+
+
       let date = new Date();
       console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}  开始编译：${path}`);
       await Transform(path);

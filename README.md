@@ -8,7 +8,8 @@ css文件自动转换成react-native样式文件。
 3、支持嵌套  
 4、支持`transform`  
 5、适配各种手机  
-6、支持群组选择器
+6、支持群组选择器  
+7、忽略文件
 
 ### 安装
 ``` javascript
@@ -30,7 +31,8 @@ ToStyles.init(path[, options]);
     - postfix{string} 转换生成的js文件后缀，默认`Style.js`。例如：`home.scss`转换生成`homeStyle.js`
     - initTransform{boolean} 启动服务后，是否自动转换所有的css文件，默认`false`
     - adaptation{boolean} 适配各种手机，默认`true`。如果单个样式不需要适配，请添加` !important`标志
-    - templatePath{string} 自动转换文件模板路径，默认`./template.js`
+    - templatePath{string} 自动转换文件模板路径，默认`./template.js`  
+    - ignored{array} 忽略文件`"xxx.scss"`，忽略文件夹`"home"`或者`"component/home"`，默认`[]`。
 ##### 启动  
 ``` javascript
 node toStyles.js

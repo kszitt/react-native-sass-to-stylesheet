@@ -9,6 +9,7 @@ css file transform to react-native stylesheet
 4. support `transform`  
 5. adapt to all kinds of mobile phones
 6. support group selector
+7. ignore files
 
 ### Summary
 - [Install](#install)
@@ -56,6 +57,7 @@ SassToStyles.init(path[, options]);
     - initTransform{boolean} Whether to automatically convert all CSS files after starting the service, default`false`
     - adaptation{boolean} adapt to all kinds of mobile phones, default`true`. if a single style does not need to be adapted, Please add the ` !important`sign
     - templatePath{string} automatic conversion of file template path
+    - ignored{array} ignore file`"xxx.scss"`, ignore folders`"xxx"`or`"component/xxx"`, default`[]`。
 ##### start
 ``` javascript
 node toStyles.js
