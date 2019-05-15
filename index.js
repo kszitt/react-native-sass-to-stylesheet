@@ -79,17 +79,16 @@ async function init(path, options){
       // 忽略文件
       for(let item of params.ignored){
         if(/\./.test(item)){   // 文件
-          if(eval('/'+ item +'$/').test(path)){
+          if(eval('/'+ item.replace(/\./g, "\\.") +'$/').test(path)){
             console.log(path, "忽略");
             return;
           }
         } else {   // 文件夹
-          if(OS.platform() === "win32") item = item.replace(/\//, "\\\\");
-          if(eval('/'+ item.replace(/\//, "\\\\") +'/').test(path)){
+          item = item.replace(/\//g, OS.platform() === "win32" ? "\\\\" : "\\\/");
+          if(eval('/'+ item +'/').test(path)){
             console.log(path, "忽略");
             return;
           }
-
         }
       }
 
