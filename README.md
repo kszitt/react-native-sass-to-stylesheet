@@ -10,6 +10,7 @@ css文件自动转换成react-native样式文件。
 5、适配各种手机  
 6、支持群组选择器  
 7、忽略文件
+8、scss文件支持`@import`
 
 ### 安装
 ``` javascript
@@ -258,6 +259,28 @@ let styles = {
     lineHeight: getAdaptation(24)
   },
   header_left: {
+    color: "red"
+  }
+};
+```
+##### @import
+``` scss
+@import "../header.scss"; // 必须写后缀名
+.header {
+  color: red;
+}
+```
+``` scss
+// header.scss
+.header {
+  width: 100px;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  header: {
+    width: getAdaptation(100),
     color: "red"
   }
 };

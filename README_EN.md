@@ -10,6 +10,7 @@ css file transform to react-native stylesheet
 5. adapt to all kinds of mobile phones
 6. support group selector
 7. ignore files
+8. SCSS file support `@import`
 
 ### Summary
 - [Install](#install)
@@ -284,6 +285,28 @@ let styles = {
     lineHeight: getAdaptation(24)
   },
   header_left: {
+    color: "red"
+  }
+};
+```
+##### @import
+``` scss
+@import "../header.scss"; // suffix names must be written
+.header {
+  color: red;
+}
+```
+``` scss
+// header.scss
+.header {
+  width: 100px;
+}
+```
+↓ ↓ ↓ ↓ ↓ ↓
+``` javascript
+let styles = {
+  header: {
+    width: getAdaptation(100),
     color: "red"
   }
 };

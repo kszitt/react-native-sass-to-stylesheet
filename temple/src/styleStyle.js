@@ -9,13 +9,9 @@ function getAdaptation(num){
 
 let styles = {
   header: {
+    width: getAdaptation(100),
     color: "red",
-    shadowOffset: {
-      width: getAdaptation(10),
-      height: getAdaptation(10)
-    },
-    shadowRadio: getAdaptation(5),
-    shadowColor: "#888888"
+    fontSize: getAdaptation(12)
   }
 };
 
