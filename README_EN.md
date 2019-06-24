@@ -9,7 +9,7 @@ css file transform to react-native stylesheet
 4. support `transform`  
 5. adapt to all kinds of mobile phones
 6. support group selector
-7. ignore files
+7. ignore files  
 8. SCSS file support `@import`
 
 ### Summary
