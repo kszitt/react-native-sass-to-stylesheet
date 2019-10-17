@@ -1,0 +1,5 @@
+$border: 1px solid red !global;
+@import "./src/aaa.scss";
+.footer {
+  border: $border;
+}

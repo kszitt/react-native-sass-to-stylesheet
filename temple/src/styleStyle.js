@@ -9,7 +9,18 @@ function getAdaptation(num){
 
 let styles = {
   header: {
-    width: getAdaptation(100),
+    width: getAdaptation(100)
+  },
+  footer: {
+    borderWidth: getAdaptation(1),
+    borderColor: "red",
+    borderStyle: "solid"
+  },
+  aa: {
+    backgroundColor: "blue"
+  },
+  bbb: {},
+  style: {
     color: "red",
     fontSize: getAdaptation(12)
   }

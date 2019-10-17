@@ -33,6 +33,26 @@ function getTemplate(){
   params.template = template;
 }
 
+// 忽略文件
+function ignoredFile(path){
+  for(let item of params.ignored){
+    if(/\./.test(item)){   // 文件
+      if(eval('/'+ item.replace(/\./g, "\\.") +'$/').test(path)){
+        console.log(path, "忽略");
+        return true;
+      }
+    } else {   // 文件夹
+      item = item.replace(/\//g, OS.platform() === "win32" ? "\\\\" : "\\\/");
+      if(eval('/'+ item +'/').test(path)){
+        console.log(path, "忽略");
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 async function init(path, options){
   params = Object.assign(params, options);
 
@@ -56,7 +76,7 @@ async function init(path, options){
 
   if(params.initTransform){
     await AutoWriteStyles(path);
-    return;
+    // return;
   }
 
   let watcher = chokidar.watch(path, {
@@ -78,20 +98,7 @@ async function init(path, options){
       compile[path] = dataMd5;
 
       // 忽略文件
-      for(let item of params.ignored){
-        if(/\./.test(item)){   // 文件
-          if(eval('/'+ item.replace(/\./g, "\\.") +'$/').test(path)){
-            console.log(path, "忽略");
-            return;
-          }
-        } else {   // 文件夹
-          item = item.replace(/\//g, OS.platform() === "win32" ? "\\\\" : "\\\/");
-          if(eval('/'+ item +'/').test(path)){
-            console.log(path, "忽略");
-            return;
-          }
-        }
-      }
+      if(ignoredFile(path)) return;
 
 
       let date = new Date();
@@ -111,5 +118,6 @@ async function init(path, options){
 
 SassToStyles.init = init;
 SassToStyles.getOptions = getOptions;
+SassToStyles.ignoredFile = ignoredFile;
 module.exports = SassToStyles;
 
